@@ -39,7 +39,7 @@ class ChromePageRender:
             rules_awaiting_selectors: list[str],
             timeout_seconds: float,
             print_error_log_to_console: bool = False
-    ) -> (str, bool):  # (page_cource: str, is_timed_out: bool)
+    ) -> (str, bool):  # (page_source: str, is_timed_out: bool)
         if not isinstance(url, str) or url.find("http") != 0:
             return ""
         self.__browser.get(url)
@@ -51,22 +51,22 @@ class ChromePageRender:
                         expected_conditions.presence_of_element_located((By.CSS_SELECTOR, selector_rule))
                     )
                     timeout_seconds = patched_timeout_seconds
+                return self.__browser.page_source, False
             elif selector_type == "xpath":
                 for selector_rule in rules_awaiting_selectors:
                     WebDriverWait(self.__browser, timeout_seconds).until(
                         expected_conditions.presence_of_element_located((By.XPATH, selector_rule))
                     )
                     timeout_seconds = patched_timeout_seconds
+                return self.__browser.page_source, False
             else:
-                raise Exception(
-                    "ChromePageRender: get_html_text_with_selector: Error. Invalid selector_type. Use 'css' or 'xpath'.")
+                raise TimeoutException()
         except TimeoutException:
             if print_error_log_to_console:
                 print(
-                    f"ChromePageRender: get_html_text_with_selector: Timeout ({timeout_seconds} sec). Element with {selector_type} \"{selector_rule}\" is not found."
+                    f"ChromePageRender: get_html_text_with_selector: Timeout ({timeout_seconds} sec)."
                 )
-            return (self.__browser.page_source, True)
-        return (self.__browser.page_source, False)
+            return self.__browser.page_source, True
 
     # def take_screenshot(self, save_path: str):
     #     self.__browser.save_screenshot(save_path)
