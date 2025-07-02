@@ -64,5 +64,5 @@ for url_name in URLData.keys():
         html_content=html_content
     )
 with open("./generated_html/index.html", "w", encoding="utf-8") as f:
-    f.write(new_document.render(pretty=True))
+    f.write(new_document.render(pretty=True)) # pretty makes the HTML file human-readable
 print("combined.html has been generated!")
