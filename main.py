@@ -11,10 +11,6 @@ from ChromePageRender import (
 from dominate import document as HTMLDocument, tags as HTMLTags, util as HTMLUtils
 from bs4 import BeautifulSoup
 
-# import os, sys
-# os.add_dll_directory(os.path.join(sys.exec_prefix, "Library", "bin"))
-from weasyprint import HTML, CSS
-
 # '''
 #     You must properly set up this <__chrome_driver_filepath> to run this script..!
 # '''
@@ -102,12 +98,10 @@ for url_name in URLData.keys():
     )
 
 html_content = new_document.render(pretty=True)
-# with open("./generated_html/index.html", "w", encoding="utf-8") as html_file:
-#     html_file.write(html_content)  # pretty makes the HTML file human-readable
-#     html_file.close()
-# print("combined.html has been generated!")
-
-HTML(string=html_content, base_url=getcwd()).write_pdf(
-    './generated_html/index.pdf',
-    # stylesheets=[CSS(filename='./generated_html/index.css')]
-)
+try:
+    with open("./generated_html/index.html", "w", encoding="utf-8") as html_file:
+        html_file.write(html_content)  # pretty makes the HTML file human-readable
+        html_file.close()
+except Exception as e:
+    print('failed to write ./generated_html/index.html')
+print("./generated_html/index.html has been generated!")
