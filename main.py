@@ -54,7 +54,7 @@ def handler1(document: HTMLDocument, site_name: str, site_logo_path: str, site_u
                 url_root = url[:url.rfind('/')]  # compute the url root to deal with relative href links
                 soup = BeautifulSoup(html_content, 'html.parser')  # create HTML parser
                 for briefItem in soup.select('div.briefItem'):  # search all the HTML elements according to CSS selector
-                    # edit each original HTML element
+                    # edit each original HTML element -- !!! THIS STEP IS USUALLY DIFFERENT FROM WEBSITES !!!
                     briefItem['class'] = ['page-board-item']
                     commonAs = briefItem.select('a.commonA')
                     for commonA in commonAs:
@@ -82,7 +82,11 @@ URLData = {
         'HTMLContentHandler': handler1
     },
 }
-for url_name in LoopMeter(URLData.keys()):
+for url_name in LoopMeter(
+        URLData.keys(),
+        unit="site", # should be single form in English since it's too slow
+        unit_scale=False
+):
     chrome_options = ChromeOptions()
     # chrome_options.add_argument('--incognito')
     chrome_options.add_argument('--disable-blink-features=AutomationControlled')
@@ -100,9 +104,10 @@ for url_name in LoopMeter(URLData.keys()):
         chrome_driver_filepath=__chrome_driver_path,
         options=chrome_options
     )
+    print(f'start collecting data from {url_name}.')
     url_data = URLData[url_name]
     urls_contents = dict()
-    for url in LoopMeter(url_data['URLs']):
+    for url in url_data['URLs']:
         (html_content, is_timed_out) = chrome_page_render.get_html_text_awaiting_selector(
             url=url,
             selector_type='css' if url_data['SelectorType'] == 'css' else 'xpath',
@@ -132,4 +137,4 @@ try:
         html_file.close()
     print('successfully generated ./generated_html/index.html')
 except Exception as e:
-    print('failed to write ./generated_html/index.html')
+    print('failed to write "./generated_html/index.html".')
