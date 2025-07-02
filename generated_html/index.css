@@ -8,6 +8,19 @@ body {
   line-height: 1.6;
 }
 
+/* Disable dragging of all images */
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 /* Main page title */
 h1 {
   font-size: 2.5rem;
@@ -49,7 +62,7 @@ h1 {
   text-align: center;
   border-bottom: 2px solid #e0e0e0;
   padding-bottom: 10px;
-  color: #00008B; /* Deep blue font for h2 */
+  color: #00008B;
 }
 
 .page-board > a:hover h2 {
