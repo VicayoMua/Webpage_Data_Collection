@@ -111,6 +111,6 @@ try:
     with open('./generated_html/index.html', 'w', encoding='utf-8') as html_file:
         html_file.write(new_html_content)  # pretty makes the HTML file human-readable
         html_file.close()
-    print('./generated_html/index.html has been generated!')
+    print('successfully generated ./generated_html/index.html')
 except Exception as e:
     print('failed to write ./generated_html/index.html')
