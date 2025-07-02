@@ -1,9 +1,10 @@
 # from os import getcwd
 # from time import sleep as thread_sleep
 
-from datetime import date
+from datetime import datetime
 
-date_today = date.today()
+# configure <current_time> instance object
+current_time = datetime.now()
 
 from ChromePageRender import (
     # something else
@@ -11,13 +12,14 @@ from ChromePageRender import (
     ChromePageRender
 )
 
-__chrome_driver_filepath: str = './chromedrivers/chromedriver-win64-v138.0.7204.92/chromedriver.exe'
+# configure chrome driver path
+__chrome_driver_path: str = './chromedrivers/chromedriver-win64-v138.0.7204.92/chromedriver.exe'
 
 from dominate import document as HTMLDocument, tags as HTMLTags, util as HTMLUtils
 from bs4 import BeautifulSoup
-
 from tqdm import tqdm as LoopMeter
 
+# configure new HTML document header and body
 new_document: HTMLDocument = HTMLDocument(title='知名智库精选数据', lang='zh')
 with new_document.head:
     HTMLTags.meta(
@@ -30,14 +32,22 @@ with new_document.head:
         href='./index.css'
     )
 with new_document.body:
-    HTMLTags.h1(f"知名智库精选数据（更新时间：{date_today.year}/{date_today.month:02d}/{date_today.day:02d}）")
+    HTMLTags.h1(
+        f"知名智库精选数据（更新时间：{current_time.year}/{current_time.month:02d}/{current_time.day:02d} {current_time.hour:02d}:{current_time.minute:02d}:{current_time.second:02d}）"
+    )
 
 
-def handler1(document: HTMLDocument, site_name: str, site_urls_contents: dict[str, str]):
+# ---------------------------------------------------------------------------------------------------------------------
+# |                                  The following code collects online data.                                         |
+# ---------------------------------------------------------------------------------------------------------------------
+
+
+def handler1(document: HTMLDocument, site_name: str, site_logo_path: str, site_urls_contents: dict[str, str]):
     # written for '中国人民大学国家发展与战略研究院（学者观点）'
     # this function adds <site_name> and <site_urls_contents> into <document> in an elegant way
     with document.body:
         with HTMLTags.div(cls='page-board'):  # create a new board for this url series
+            HTMLTags.img(cls='site-logo', src=site_logo_path, alt='Missing Logo')
             for (index, (url, html_content)) in enumerate(site_urls_contents.items()):  # view each url-html pair
                 with HTMLTags.a(href=url):
                     HTMLTags.h2(f"{site_name} 第{index + 1}页")
@@ -68,6 +78,7 @@ URLData = {
             'div.briefItem',
             'a.commonA'
         ],
+        'LogoPath': './Logos/handler1.png',
         'HTMLContentHandler': handler1
     },
 }
@@ -86,7 +97,7 @@ for url_name in LoopMeter(URLData.keys()):
         'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
     )
     chrome_page_render = ChromePageRender(
-        chrome_driver_filepath=__chrome_driver_filepath,
+        chrome_driver_filepath=__chrome_driver_path,
         options=chrome_options
     )
     url_data = URLData[url_name]
@@ -105,8 +116,14 @@ for url_name in LoopMeter(URLData.keys()):
         url_data['HTMLContentHandler'](
             document=new_document,
             site_name=url_name,
+            site_logo_path=url_data['LogoPath'],
             site_urls_contents=urls_contents
         )
+
+# ---------------------------------------------------------------------------------------------------------------------
+# |                      The following code saves collected online data to local disk.                                |
+# ---------------------------------------------------------------------------------------------------------------------
+
 
 new_html_content = new_document.render(pretty=True)
 try:
