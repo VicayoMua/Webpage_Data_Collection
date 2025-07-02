@@ -1,7 +1,7 @@
-from openpyxl import load_workbook, Workbook  # other files may need it, so keep it!!!
-from openpyxl.worksheet.worksheet import Worksheet
-from openpyxl.cell import Cell  # other files may need it, so keep it!!!
-from openpyxl.styles import Font, Alignment, PatternFill  # other files may need it, so keep it!!!
+from openpyxl import load_workbook as load_excel_workbook, Workbook as ExcelWorkbook  # other files may need it, so keep it!!!
+from openpyxl.worksheet.worksheet import Worksheet as ExcelWorksheet
+from openpyxl.cell import Cell as ExcelCell  # other files may need it, so keep it!!!
+from openpyxl.styles import Font as ExcelFont, Alignment as ExcelAlignment, PatternFill as ExcelPatternFill  # other files may need it, so keep it!!!
 
 
 def ask_for_excel_filepath(query: str) -> str:
@@ -14,7 +14,7 @@ def ask_for_excel_filepath(query: str) -> str:
 def get_worksheet_data_by_axis(
         data_container: set | list,
         clear_data_container: bool,
-        sheet: Worksheet,
+        sheet: ExcelWorksheet,
         axis: str,
         value_former_transformer=lambda v: v,
         value_filter=lambda v: True,
@@ -39,7 +39,7 @@ def get_worksheet_data_by_axis(
 def get_worksheet_data_by_column_title(
         data_container: set | list,
         clear_data_container: bool,
-        sheet: Worksheet,
+        sheet: ExcelWorksheet,
         column_title: str | None,
         value_former_transformer=lambda v: v,
         value_filter=lambda v: True,
@@ -78,7 +78,7 @@ def get_worksheet_data_by_column_title(
 def get_worksheet_data_by_row_title(
         data_container: set | list,
         clear_data_container: bool,
-        sheet: Worksheet,
+        sheet: ExcelWorksheet,
         row_title: str | None,
         value_former_transformer=lambda v: v,
         value_filter=lambda v: True,
@@ -115,15 +115,15 @@ def get_worksheet_data_by_row_title(
 
 
 def put_worksheet_data_by_axis(
-        sheet: Worksheet,
+        sheet: ExcelWorksheet,
         axis: str,
         value_title: str = "",
         print_item_count: bool = True,
-        value_title_font: Font = Font(name="Times New Roman", bold=True, size=12),
-        value_title_alignment: Alignment = Alignment(horizontal="center", vertical="center"),
+        value_title_font: ExcelFont = ExcelFont(name="Times New Roman", bold=True, size=12),
+        value_title_alignment: ExcelAlignment = ExcelAlignment(horizontal="center", vertical="center"),
         dataset: set | tuple | list | range = None,
-        value_font: Font = Font(name="Times New Roman", color="000000", size=12),
-        value_alignment: Alignment = Alignment(horizontal="center", vertical="center"),
+        value_font: ExcelFont = ExcelFont(name="Times New Roman", color="000000", size=12),
+        value_alignment: ExcelAlignment = ExcelAlignment(horizontal="center", vertical="center"),
         uniform_row_height: int = 20,
         uniform_column_width: int = 40
 ) -> None:
