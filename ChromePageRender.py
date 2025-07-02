@@ -32,7 +32,7 @@ class ChromePageRender:
             options=options
         )
 
-    def get_html_text_with_selector(
+    def get_html_text_awaiting_selector(
             self,
             url: str,
             selector_type: Literal["css", "xpath"],

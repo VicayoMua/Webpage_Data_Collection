@@ -5,7 +5,7 @@
 # # '''
 # #     You must set up this <__chrome_driver_filepath> in order to run this script..!
 # # '''
-# __chrome_driver_filepath: str = "./chromedriver/chromedriver_132_macos_arm64"
+# __chrome_driver_filepath: str = "./chromedrivers/chromedriver_132_macos_arm64"
 #
 #
 # def automation_for_sheet_1(
