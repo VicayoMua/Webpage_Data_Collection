@@ -1,3 +1,5 @@
+from os import getcwd
+
 # from time import sleep as thread_sleep
 
 from ChromePageRender import (
@@ -8,6 +10,10 @@ from ChromePageRender import (
 
 from dominate import document as HTMLDocument, tags as HTMLTags, util as HTMLUtils
 from bs4 import BeautifulSoup
+
+# import os, sys
+# os.add_dll_directory(os.path.join(sys.exec_prefix, "Library", "bin"))
+from weasyprint import HTML, CSS
 
 # '''
 #     You must properly set up this <__chrome_driver_filepath> to run this script..!
@@ -30,9 +36,9 @@ with new_document.head:
 def handler1(site_name: str, site_url: str, html_content: str):
     # written for '中国人民大学国家发展与战略研究院（学者观点）'
     # this function adds site_name and html_content into new_document in an elegant way
-    # get search for html elements in html_content
+    # get search for HTML elements in html_content
     soup = BeautifulSoup(html_content, "html.parser")
-    # apply css selector
+    # apply CSS selector
     briefItems = soup.select('div.briefItem')
     # edit original information
     for briefItem in briefItems:
@@ -94,7 +100,14 @@ for url_name in URLData.keys():
         site_url=url,
         html_content=html_content
     )
-with open("./generated_html/index.html", "w", encoding="utf-8") as html_file:
-    html_file.write(new_document.render(pretty=True))  # pretty makes the HTML file human-readable
-    html_file.close()
-print("combined.html has been generated!")
+
+html_content = new_document.render(pretty=True)
+# with open("./generated_html/index.html", "w", encoding="utf-8") as html_file:
+#     html_file.write(html_content)  # pretty makes the HTML file human-readable
+#     html_file.close()
+# print("combined.html has been generated!")
+
+HTML(string=html_content, base_url=getcwd()).write_pdf(
+    './generated_html/index.pdf',
+    # stylesheets=[CSS(filename='./generated_html/index.css')]
+)
