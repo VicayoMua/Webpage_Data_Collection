@@ -1,6 +1,9 @@
 # from os import getcwd
-
 # from time import sleep as thread_sleep
+
+from datetime import date
+
+date_today = date.today()
 
 from ChromePageRender import (
     # something else
@@ -8,17 +11,14 @@ from ChromePageRender import (
     ChromePageRender
 )
 
+__chrome_driver_filepath: str = './chromedrivers/chromedriver-win64-v138.0.7204.92/chromedriver.exe'
+
 from dominate import document as HTMLDocument, tags as HTMLTags, util as HTMLUtils
 from bs4 import BeautifulSoup
 
 from tqdm import tqdm as LoopMeter
 
-# '''
-#     You must properly set up this <__chrome_driver_filepath> to run this script..!
-# '''
-__chrome_driver_filepath: str = './chromedrivers/chromedriver-win64-v138.0.7204.92/chromedriver.exe'
-
-new_document: HTMLDocument = HTMLDocument(title='国内外知名智库精选数据', lang='zh')
+new_document: HTMLDocument = HTMLDocument(title='知名智库精选数据', lang='zh')
 with new_document.head:
     HTMLTags.meta(
         charset='utf-8',
@@ -29,6 +29,8 @@ with new_document.head:
         rel='stylesheet',
         href='./index.css'
     )
+with new_document.body:
+    HTMLTags.h1(f"知名智库精选数据（更新时间：{date_today.year}/{date_today.month:02d}/{date_today.day:02d}）")
 
 
 def handler1(document: HTMLDocument, site_name: str, site_urls_contents: dict[str, str]):
