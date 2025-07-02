@@ -28,6 +28,7 @@ with new_document.head:
 
 
 def handler1(site_name: str, site_url: str, html_content: str):
+    # written for '中国人民大学国家发展与战略研究院（学者观点）'
     # this function adds site_name and html_content into new_document in an elegant way
     # get search for html elements in html_content
     soup = BeautifulSoup(html_content, "html.parser")
