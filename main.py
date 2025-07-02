@@ -14,19 +14,47 @@ from bs4 import BeautifulSoup
 # '''
 __chrome_driver_filepath: str = "./chromedrivers/chromedriver-win64-v138.0.7204.92/chromedriver.exe"
 
-new_document: HTMLDocument = HTMLDocument(title="国内外知名智库精选数据")
+new_document: HTMLDocument = HTMLDocument(title="国内外知名智库精选数据", lang='zh')
+with new_document.head:
+    HTMLTags.meta(
+        charset='utf-8',
+        name='viewport',
+        content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+    )
+    HTMLTags.link(
+        rel='stylesheet',
+        href='./index.css'
+    )
 
 
-def handler1(site_name: str, html_content: str):
-    # add site_name and html_content into new_document in an elegant way
-    pass
+def handler1(site_name: str, site_url: str, html_content: str):
+    # this function adds site_name and html_content into new_document in an elegant way
+    # get search for html elements in html_content
+    soup = BeautifulSoup(html_content, "html.parser")
+    # apply css selector
+    briefItems = soup.select('div.briefItem')
+    # edit original information
+    for briefItem in briefItems:
+        briefItem['class'] = ['page-board-item']
+        commonAs = briefItem.select('a.commonA')
+        for commonA in commonAs:
+            commonA.attrs.pop('class', None)
+            commonA['href'] = f"{site_url[:site_url.rfind('/')]}/{commonA['href']}"
+    # add information into new_document body
+    with new_document.body:
+        with HTMLTags.div(cls='page-board'):
+            with HTMLTags.a(href=site_url):
+                HTMLTags.h2(site_name)
+            for briefItem in briefItems:
+                HTMLUtils.raw(str(briefItem))
 
 
 URLData = {
-    '中国人民大学国家发展与战略研究院': {
+    '中国人民大学国家发展与战略研究院（学者观点）': {
         'URL': 'http://nads.ruc.edu.cn/zkdt/xzgd/index.htm',
         'SelectorType': 'css',
-        'SelectorRules': ['div.commonRight', 'div.commonRightTitle', 'div.Brief', 'div.briefItem', 'a.commonA'],
+        'RulesAwaitingSelectors': ['div.commonRight', 'div.commonRightTitle', 'div.Brief', 'div.briefItem',
+                                   'a.commonA'],
         'HTMLContentHandler': handler1
     },
 }
@@ -49,10 +77,11 @@ for url_name in URLData.keys():
         options=chrome_options
     )
     url_data = URLData[url_name]
+    url = url_data['URL']
     (html_content, is_timed_out) = chrome_page_render.get_html_text_awaiting_selector(
-        url=url_data['URL'],
+        url=url,
         selector_type='css' if url_data['SelectorType'] == 'css' else 'xpath',
-        selector_rules=url_data['SelectorRules'],
+        rules_awaiting_selectors=url_data['RulesAwaitingSelectors'],
         timeout_seconds=30,
         print_error_log_to_console=True
     )
@@ -60,9 +89,11 @@ for url_name in URLData.keys():
     if is_timed_out:
         continue
     url_data['HTMLContentHandler'](
-        url_name=url_name,
+        site_name=url_name,
+        site_url=url,
         html_content=html_content
     )
-with open("./generated_html/index.html", "w", encoding="utf-8") as f:
-    f.write(new_document.render(pretty=True)) # pretty makes the HTML file human-readable
+with open("./generated_html/index.html", "w", encoding="utf-8") as html_file:
+    html_file.write(new_document.render(pretty=True))  # pretty makes the HTML file human-readable
+    html_file.close()
 print("combined.html has been generated!")

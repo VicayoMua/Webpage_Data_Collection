@@ -36,7 +36,7 @@ class ChromePageRender:
             self,
             url: str,
             selector_type: Literal["css", "xpath"],
-            selector_rules: list[str],
+            rules_awaiting_selectors: list[str],
             timeout_seconds: float,
             print_error_log_to_console: bool = False
     ) -> (str, bool):  # (page_cource: str, is_timed_out: bool)
@@ -44,15 +44,15 @@ class ChromePageRender:
             return ""
         self.__browser.get(url)
         try:
-            patched_timeout_seconds = 1 / len(selector_rules)
+            patched_timeout_seconds = 1 / len(rules_awaiting_selectors)
             if selector_type == "css":
-                for selector_rule in selector_rules:
+                for selector_rule in rules_awaiting_selectors:
                     WebDriverWait(self.__browser, timeout_seconds).until(
                         expected_conditions.presence_of_element_located((By.CSS_SELECTOR, selector_rule))
                     )
                     timeout_seconds = patched_timeout_seconds
             elif selector_type == "xpath":
-                for selector_rule in selector_rules:
+                for selector_rule in rules_awaiting_selectors:
                     WebDriverWait(self.__browser, timeout_seconds).until(
                         expected_conditions.presence_of_element_located((By.XPATH, selector_rule))
                     )
