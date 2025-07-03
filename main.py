@@ -49,6 +49,8 @@ def handler1(document: HTMLDocument, site_name: str, site_logo_path: str, site_u
         with HTMLTags.div(cls='page-board'):  # create a new board for this url series
             HTMLTags.img(cls='site-logo', src=site_logo_path, alt='Missing Logo')
             for (index, (url, html_content)) in enumerate(site_urls_contents.items()):  # view each url-html pair
+                if html_content is None:
+                    continue
                 with HTMLTags.a(href=url):
                     HTMLTags.h2(f"{site_name} 第{index + 1}页")
                 url_root = url[:url.rfind('/')]  # compute the url root to deal with relative href links
@@ -84,7 +86,7 @@ URLData = {
 }
 for url_name in LoopMeter(
         URLData.keys(),
-        unit="site", # should be single form in English since it's too slow
+        unit="site",  # should be single form in English since it's too slow
         unit_scale=False
 ):
     chrome_options = ChromeOptions()
@@ -115,8 +117,7 @@ for url_name in LoopMeter(
             timeout_seconds=30,
             print_error_log_to_console=True
         )
-        if not is_timed_out:
-            urls_contents[url] = html_content
+        urls_contents[url] = html_content if not is_timed_out else None
     if len(urls_contents) > 0:
         url_data['HTMLContentHandler'](
             document=new_document,
