@@ -98,7 +98,7 @@ def handler2(chrome_page_render: ChromePageRender, document: HTMLDocument, url_n
 
 
 def handler3(chrome_page_render: ChromePageRender, document: HTMLDocument, url_name: str, url_info: dict) -> None:
-    urls_contents = dict()
+
 
     return None
 
@@ -166,7 +166,11 @@ URLData = {
     '国务院发展研究中心（中心动态）': {
         'URL': 'https://www.drc.gov.cn/Leaf.aspx?leafid=1346',
         'RulesAwaitingSelectors(Types,Rules)': [
-            ('css', 'div.'),
+            ('css', 'div.conright.fr'),
+            ('css', 'div.containerbg'),
+            ('css', 'div.document-box'),
+            ('css', 'div.rr3'),
+            ('css', 'div.re_box'),
         ],
         'WaitingTimeLimitInSeconds': 30,
         'LogoPath': './Logos/handler3.png',

@@ -11,9 +11,11 @@ from typing import Literal
 
 from urllib.parse import urlparse as url_parse
 
+
 def is_valid_url(url):
     parsed = url_parse(url)
     return (parsed.scheme in ["http", "https"]) and (parsed.netloc != "")
+
 
 class SafeChrome(webdriver.Chrome):
     def __del__(self):
@@ -80,11 +82,7 @@ class ChromePageRender:
             waiting_timeout_in_seconds: float,
             use_javascript: bool,
             print_error_log_to_console: bool = False
-    ) -> bool:
-        """
-        Clicks the first matching element by selector.
-        Returns True if successful, False if timeout.
-        """
+    ) -> bool:  # is_timed_out: bool
         try:
             by = None
             if selector_type == 'css':
@@ -100,11 +98,11 @@ class ChromePageRender:
                 self.__browser.execute_script('arguments[0].click();', html_element)
             else:
                 html_element.click()
-            return True
+            return False
         except TimeoutException:
             if print_error_log_to_console:
                 print(f"ChromePageRender: click_element: Timeout after {waiting_timeout_in_seconds} seconds.")
-            return False
+            return True
 
     # def take_screenshot(self, save_path: str):
     #     self.__browser.save_screenshot(save_path)
