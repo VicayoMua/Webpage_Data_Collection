@@ -26,21 +26,20 @@ from urllib.parse import urlparse as url_parse, urljoin as url_join
 # ---------------------------------------------------------------------------------------------------------------------
 
 
-def handler1(chrome_page_render: ChromePageRender, document: HTMLDocument, url_name: str, url_info: dict):
+def handler1(chrome_page_render: ChromePageRender, document: HTMLDocument, url_name: str, url_info: dict) -> None:
     # written for '中国国际工程咨询有限公司（智库建议）'
     # this function adds <site_name> and <site_urls_contents> into <document> in an elegant way
     if len(url_info['URLs']) <= 0:
         return
     urls_contents = dict()
     for url in url_info['URLs']:
-        (html_content, is_timed_out) = chrome_page_render.get_html_text_awaiting_selector(
+        is_timed_out = chrome_page_render.goto_url_awaiting_selectors(
             url=url,
-            selector_type='css' if url_info['SelectorType'] == 'css' else 'xpath',
-            rules_awaiting_selectors=url_info['RulesAwaitingSelectors'],
-            timeout_seconds=url_info['WaitingTimeLimitInSeconds'],
+            selector_types_rules=url_info['RulesAwaitingSelectors(Types,Rules)'],
+            waiting_timeout_in_seconds=url_info['WaitingTimeLimitInSeconds'],
             print_error_log_to_console=True
         )
-        urls_contents[url] = html_content if not is_timed_out else None
+        urls_contents[url] = chrome_page_render.get_page_source() if not is_timed_out else None
     urls_contents_len = len(urls_contents)
     with document.body:
         with HTMLTags.div(cls='page-board'):  # create a new board for this url series
@@ -65,21 +64,20 @@ def handler1(chrome_page_render: ChromePageRender, document: HTMLDocument, url_n
     return None
 
 
-def handler2(chrome_page_render: ChromePageRender, document: HTMLDocument, url_name: str, url_info: dict):
+def handler2(chrome_page_render: ChromePageRender, document: HTMLDocument, url_name: str, url_info: dict) -> None:
     # written for '中国人民大学国家发展与战略研究院（学者观点）'
     # this function adds <site_name> and <site_urls_contents> into <document> in an elegant way
     if len(url_info['URLs']) <= 0:
         return
     urls_contents = dict()
     for url in url_info['URLs']:
-        (html_content, is_timed_out) = chrome_page_render.get_html_text_awaiting_selector(
+        is_timed_out = chrome_page_render.goto_url_awaiting_selectors(
             url=url,
-            selector_type='css' if url_info['SelectorType'] == 'css' else 'xpath',
-            rules_awaiting_selectors=url_info['RulesAwaitingSelectors'],
-            timeout_seconds=url_info['WaitingTimeLimitInSeconds'],
+            selector_types_rules=url_info['RulesAwaitingSelectors(Types,Rules)'],
+            waiting_timeout_in_seconds=url_info['WaitingTimeLimitInSeconds'],
             print_error_log_to_console=True
         )
-        urls_contents[url] = html_content if not is_timed_out else None
+        urls_contents[url] = chrome_page_render.get_page_source() if not is_timed_out else None
     urls_contents_len = len(urls_contents)
     with document.body:
         with HTMLTags.div(cls='page-board'):  # create a new board for this url series
@@ -99,69 +97,80 @@ def handler2(chrome_page_render: ChromePageRender, document: HTMLDocument, url_n
     return None
 
 
+def handler3(chrome_page_render: ChromePageRender, document: HTMLDocument, url_name: str, url_info: dict) -> None:
+    urls_contents = dict()
+
+    return None
+
+
 URLData = {
-    '中国国际工程咨询有限公司（智库建议）': {
-        'URLs': [
-            'https://www.ciecc.com.cn/col/col3963/index.html',
-            'https://www.ciecc.com.cn/col/col3963/index.html?uid=5248&pageNum=2',
-        ],
-        'SelectorType': 'css',
-        'RulesAwaitingSelectors': [
-            'div.main_comr.fr',
-            'div.default_pgContainer',
-            'div.news-list',
-            'div.newscontent'
+    # '中国国际工程咨询有限公司（智库建议）': {
+    #     'URLs': [
+    #         'https://www.ciecc.com.cn/col/col3963/index.html',
+    #         'https://www.ciecc.com.cn/col/col3963/index.html?uid=5248&pageNum=2',
+    #     ],
+    #     'RulesAwaitingSelectors(Types,Rules)': [
+    #         ('css', 'div.main_comr.fr'),
+    #         ('css', 'div.default_pgContainer'),
+    #         ('css', 'div.news-list'),
+    #         ('css', 'div.newscontent')
+    #     ],
+    #     'WaitingTimeLimitInSeconds': 30,
+    #     'LogoPath': './Logos/handler1.jpg',
+    #     'HTMLContentHandler': handler1
+    # },
+    # '中国国际工程咨询有限公司（中咨视界）': {
+    #     'URLs': [
+    #         'https://www.ciecc.com.cn/col/col2218/index.html',
+    #         'https://www.ciecc.com.cn/col/col2218/index.html?uid=5248&pageNum=2',
+    #     ],
+    #     'RulesAwaitingSelectors(Types,Rules)': [
+    #         ('css', 'div.main_comr.fr'),
+    #         ('css', 'div.default_pgContainer'),
+    #         ('css', 'div.news-list'),
+    #         ('css', 'div.newscontent')
+    #     ],
+    #     'WaitingTimeLimitInSeconds': 30,
+    #     'LogoPath': './Logos/handler1.jpg',
+    #     'HTMLContentHandler': handler1
+    # },
+    # '中国人民大学国家发展与战略研究院（学者观点）': {
+    #     'URLs': [
+    #         'http://nads.ruc.edu.cn/zkdt/xzgd/index.htm',
+    #         'http://nads.ruc.edu.cn/zkdt/xzgd/index1.htm',
+    #     ],
+    #     'RulesAwaitingSelectors(Types,Rules)': [
+    #         ('css', 'div.commonRight'),
+    #         ('css', 'div.commonRightTitle'),
+    #         ('css', 'div.Brief'),
+    #         ('css', 'div.briefItem'),
+    #     ],
+    #     'WaitingTimeLimitInSeconds': 30,
+    #     'LogoPath': './Logos/handler2.png',
+    #     'HTMLContentHandler': handler2
+    # },
+    # '中国人民大学国家发展与战略研究院（双周政策分析简报）': {
+    #     'URLs': [
+    #         'http://nads.ruc.edu.cn/zkcg/zcjb/szzcfxjb/index.htm',
+    #     ],
+    #     'RulesAwaitingSelectors(Types,Rules)': [
+    #         ('css', 'div.commonRight'),
+    #         ('css', 'div.commonRightTitle'),
+    #         ('css', 'div.Brief'),
+    #         ('css', 'div.briefItem'),
+    #     ],
+    #     'WaitingTimeLimitInSeconds': 30,
+    #     'LogoPath': './Logos/handler2.png',
+    #     'HTMLContentHandler': handler2
+    # },
+    '国务院发展研究中心（中心动态）': {
+        'URL': 'https://www.drc.gov.cn/Leaf.aspx?leafid=1346',
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.'),
         ],
         'WaitingTimeLimitInSeconds': 30,
-        'LogoPath': './Logos/handler1.jpg',
-        'HTMLContentHandler': handler1
-    },
-    '中国国际工程咨询有限公司（中咨视界）': {
-        'URLs': [
-            'https://www.ciecc.com.cn/col/col2218/index.html',
-            'https://www.ciecc.com.cn/col/col2218/index.html?uid=5248&pageNum=2',
-        ],
-        'SelectorType': 'css',
-        'RulesAwaitingSelectors': [
-            'div.main_comr.fr',
-            'div.default_pgContainer',
-            'div.news-list',
-            'div.newscontent'
-        ],
-        'WaitingTimeLimitInSeconds': 30,
-        'LogoPath': './Logos/handler1.jpg',
-        'HTMLContentHandler': handler1
-    },
-    '中国人民大学国家发展与战略研究院（学者观点）': {
-        'URLs': [
-            'http://nads.ruc.edu.cn/zkdt/xzgd/index.htm',
-            'http://nads.ruc.edu.cn/zkdt/xzgd/index1.htm',
-        ],
-        'SelectorType': 'css',
-        'RulesAwaitingSelectors': [
-            'div.commonRight',
-            'div.commonRightTitle',
-            'div.Brief',
-            'div.briefItem',
-        ],
-        'WaitingTimeLimitInSeconds': 30,
-        'LogoPath': './Logos/handler2.png',
-        'HTMLContentHandler': handler2
-    },
-    '中国人民大学国家发展与战略研究院（双周政策分析简报）': {
-        'URLs': [
-            'http://nads.ruc.edu.cn/zkcg/zcjb/szzcfxjb/index.htm',
-        ],
-        'SelectorType': 'css',
-        'RulesAwaitingSelectors': [
-            'div.commonRight',
-            'div.commonRightTitle',
-            'div.Brief',
-            'div.briefItem',
-        ],
-        'WaitingTimeLimitInSeconds': 30,
-        'LogoPath': './Logos/handler2.png',
-        'HTMLContentHandler': handler2
+        'LogoPath': './Logos/handler3.png',
+        'HTMLContentHandler': handler3
     },
 }
 
@@ -221,7 +230,6 @@ for (url_name, url_info) in LoopMeter(
 try:
     with open('./generated_html/index.html', 'w', encoding='utf-8') as html_file:
         html_file.write(new_document.render(pretty=True))  # pretty makes the HTML file human-readable
-        html_file.close()
     print(f"Successfully output \"./generated_html/index.html\".")
 except Exception as e:
     print(f"Failed to output \"./generated_html/index.html\". Error: {e}")

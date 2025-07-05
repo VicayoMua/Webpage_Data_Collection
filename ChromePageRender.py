@@ -9,6 +9,11 @@ from selenium.webdriver.chrome.options import Options
 import undetected_chromedriver
 from typing import Literal
 
+from urllib.parse import urlparse as url_parse
+
+def is_valid_url(url):
+    parsed = url_parse(url)
+    return (parsed.scheme in ["http", "https"]) and (parsed.netloc != "")
 
 class SafeChrome(webdriver.Chrome):
     def __del__(self):
@@ -32,45 +37,84 @@ class ChromePageRender:
             options=options
         )
 
-    def get_html_text_awaiting_selector(
+    def get_page_source(self) -> str:
+        return self.__browser.page_source
+
+    def goto_url_awaiting_selectors(
             self,
             url: str,
-            selector_type: Literal["css", "xpath"],
-            rules_awaiting_selectors: list[str],
-            timeout_seconds: float,
+            selector_types_rules: list[tuple[Literal['css', 'xpath'], str]],
+            waiting_timeout_in_seconds: float,
             print_error_log_to_console: bool = False
-    ) -> (str, bool):  # (page_source: str, is_timed_out: bool)
-        if not isinstance(url, str) or url.find("http") != 0:
-            return ""
+    ) -> bool:  # is_timed_out: bool
+        if not isinstance(url, str):
+            raise TypeError('Given url is not a string.')
+        if not is_valid_url(url):
+            raise ValueError('Given url is invalid, or it does not start with http or https.')
         self.__browser.get(url)
         try:
-            patched_timeout_seconds = 1 / len(rules_awaiting_selectors)
-            if selector_type == "css":
-                for selector_rule in rules_awaiting_selectors:
-                    WebDriverWait(self.__browser, timeout_seconds).until(
-                        expected_conditions.presence_of_element_located((By.CSS_SELECTOR, selector_rule))
-                    )
-                    timeout_seconds = patched_timeout_seconds
-                return self.__browser.page_source, False
-            elif selector_type == "xpath":
-                for selector_rule in rules_awaiting_selectors:
-                    WebDriverWait(self.__browser, timeout_seconds).until(
-                        expected_conditions.presence_of_element_located((By.XPATH, selector_rule))
-                    )
-                    timeout_seconds = patched_timeout_seconds
-                return self.__browser.page_source, False
-            else:
-                raise TimeoutException()
+            patched_timeout_in_seconds = waiting_timeout_in_seconds / len(selector_types_rules)
+            for (selector_type, selector_rule) in selector_types_rules:
+                by = None
+                if selector_type == 'css':
+                    by = By.CSS_SELECTOR
+                elif selector_type == 'xpath':
+                    by = By.XPATH
+                else:
+                    raise TypeError(f"Selector type {selector_type} is not supported.")
+                WebDriverWait(self.__browser, patched_timeout_in_seconds).until(
+                    expected_conditions.presence_of_element_located((by, selector_rule))
+                )
+            return False
         except TimeoutException:
             if print_error_log_to_console:
                 print(
-                    f"ChromePageRender: get_html_text_with_selector: Timeout ({timeout_seconds} sec)."
+                    f"ChromePageRender: get_html_text_with_selector: Timeout ({waiting_timeout_in_seconds} sec)."
                 )
-            return self.__browser.page_source, True
+            return True
+
+    def click_on_html_element(
+            self,
+            selector_type: Literal["css", "xpath"],
+            selector_rule: str,
+            waiting_timeout_in_seconds: float,
+            use_javascript: bool,
+            print_error_log_to_console: bool = False
+    ) -> bool:
+        """
+        Clicks the first matching element by selector.
+        Returns True if successful, False if timeout.
+        """
+        try:
+            by = None
+            if selector_type == 'css':
+                by = By.CSS_SELECTOR
+            elif selector_type == 'xpath':
+                by = By.XPATH
+            else:
+                raise TypeError(f"Selector type {selector_type} is not supported.")
+            html_element = WebDriverWait(self.__browser, waiting_timeout_in_seconds).until(
+                expected_conditions.element_to_be_clickable((by, selector_rule))
+            )
+            if use_javascript:
+                self.__browser.execute_script('arguments[0].click();', html_element)
+            else:
+                html_element.click()
+            return True
+        except TimeoutException:
+            if print_error_log_to_console:
+                print(f"ChromePageRender: click_element: Timeout after {waiting_timeout_in_seconds} seconds.")
+            return False
 
     # def take_screenshot(self, save_path: str):
     #     self.__browser.save_screenshot(save_path)
 
-    def close(self):
+    def close(self) -> None:
         if self.__browser:
             self.__browser.quit()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
