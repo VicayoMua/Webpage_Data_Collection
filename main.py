@@ -1,5 +1,5 @@
 # from os import getcwd
-# from time import sleep as thread_sleep
+from time import sleep
 
 from datetime import datetime
 
@@ -30,16 +30,16 @@ def handler1(chrome_page_render: ChromePageRender, document: HTMLDocument, url_n
     # written for '中国国际工程咨询有限公司（智库建议）'
     # this function adds <site_name> and <site_urls_contents> into <document> in an elegant way
     if len(url_info['URLs']) <= 0:
-        return
+        return None
     urls_contents = dict()
     for url in url_info['URLs']:
-        is_timed_out = chrome_page_render.goto_url_awaiting_selectors(
+        urls_contents[
+            url] = chrome_page_render.get_page_source() if not chrome_page_render.goto_url_waiting_for_selectors(
             url=url,
             selector_types_rules=url_info['RulesAwaitingSelectors(Types,Rules)'],
             waiting_timeout_in_seconds=url_info['WaitingTimeLimitInSeconds'],
             print_error_log_to_console=True
-        )
-        urls_contents[url] = chrome_page_render.get_page_source() if not is_timed_out else None
+        ) else None
     urls_contents_len = len(urls_contents)
     with document.body:
         with HTMLTags.div(cls='page-board'):  # create a new board for this url series
@@ -56,7 +56,7 @@ def handler1(chrome_page_render: ChromePageRender, document: HTMLDocument, url_n
                     newscontent.select_one('p').decompose()  # delete p under <newscontent>
                     a = newscontent.select_one('a')  # find a under <newscontent>
                     a.attrs.pop('target', None)  # delete target attr of <a>
-                    a['href'] = f"{url_parts.scheme}://{url_parts.netloc}{a['href']}"  # edit href attr of <a>
+                    a['href'] = f"{url_parts.scheme}://{url_parts.netloc}{a['href']}"  # resolve relative-root href url
                     span = newscontent.select_one('span')  # find span under <newscontent>
                     span.attrs.pop('class', None)  # delete class attr of <span>
                     a.append(span.extract())  # delete span under <newscontent>, and add <span> under <a>
@@ -68,16 +68,16 @@ def handler2(chrome_page_render: ChromePageRender, document: HTMLDocument, url_n
     # written for '中国人民大学国家发展与战略研究院（学者观点）'
     # this function adds <site_name> and <site_urls_contents> into <document> in an elegant way
     if len(url_info['URLs']) <= 0:
-        return
+        return None
     urls_contents = dict()
     for url in url_info['URLs']:
-        is_timed_out = chrome_page_render.goto_url_awaiting_selectors(
+        urls_contents[
+            url] = chrome_page_render.get_page_source() if not chrome_page_render.goto_url_waiting_for_selectors(
             url=url,
             selector_types_rules=url_info['RulesAwaitingSelectors(Types,Rules)'],
             waiting_timeout_in_seconds=url_info['WaitingTimeLimitInSeconds'],
             print_error_log_to_console=True
-        )
-        urls_contents[url] = chrome_page_render.get_page_source() if not is_timed_out else None
+        ) else None
     urls_contents_len = len(urls_contents)
     with document.body:
         with HTMLTags.div(cls='page-board'):  # create a new board for this url series
@@ -92,14 +92,55 @@ def handler2(chrome_page_render: ChromePageRender, document: HTMLDocument, url_n
                     briefItem['class'] = ['page-board-item']  # edit class attr of <briefItem>
                     a = briefItem.select_one('a.commonA')  # find a under <briefItem>
                     a.attrs.pop('class', None)  # delete class attr of <a>
-                    a['href'] = url_join(url, a['href'])  # edit href attr of <a>
+                    a['href'] = url_join(url, a['href'])  # resolve relative-site href url
                     HTMLUtils.raw(str(briefItem))  # add <briefItem> to the new HTML document
     return None
 
 
 def handler3(chrome_page_render: ChromePageRender, document: HTMLDocument, url_name: str, url_info: dict) -> None:
-
-
+    url = url_info['URL']
+    if chrome_page_render.goto_url_waiting_for_selectors(
+            url=url,
+            selector_types_rules=url_info['RulesAwaitingSelectors(Types,Rules)'],
+            waiting_timeout_in_seconds=url_info['MainPageWaitingTimeLimitInSeconds'],
+            print_error_log_to_console=True
+    ):
+        return None
+    with document.body:
+        with HTMLTags.div(cls='page-board'):  # create a new board for this url series
+            HTMLTags.img(cls='site-logo', src=url_info['LogoPath'], alt='Missing Logo')
+            for index in range(url_info['NumberOfPagesNeeded']):
+                html_content = chrome_page_render.get_page_source()
+                with HTMLTags.a(href=url):
+                    HTMLTags.h2(f"{url_name} 第{index + 1}页")
+                soup = BeautifulSoup(html_content, 'html.parser')  # create HTML parser
+                for re_box in soup.select('div.re_box'):  # !!! THIS IS USUALLY DIFFERENT FROM WEBSITES !!!
+                    re_box['class'] = ['page-board-item']  # edit class attr of <re_box>
+                    a = re_box.select_one('a.f11.fl.f1000.titleleafblack')  # find a under <re_box>
+                    a.attrs.pop('target', None)  # delete target attr of <a>
+                    a.attrs.pop('class', None)  # delete class attr of <a>
+                    a.string = ''  # delete string content of <a>
+                    a['href'] = url_join(url, a['href'])  # resolve relative-site href url
+                    h3 = soup.new_tag('h3')  # create new h3
+                    h3.string = a['title']  # edit string content of <h3>
+                    a.append(h3)  # add <h3> under <a>
+                    a.attrs.pop('title', None)  # delete title attr of <a>
+                    span = re_box.select_one('span')  # find span under <re_box>
+                    span.attrs.pop('class', None)  # delete class attr of <re_box>
+                    a.append(span.extract())  # delete span under <re_box>, and add <span> under <a>
+                    HTMLUtils.raw(str(re_box))  # add <re_box> to the new HTML document
+                # update html_content by clicking page switching button
+                if index != url_info['NumberOfPagesNeeded'] - 1:  # make sure that it's not the last round
+                    if chrome_page_render.click_on_html_element(
+                            click_element_selector_type="css",
+                            click_element_selector_rule="a.p-next.p-elem",
+                            use_javascript=False,
+                            max_trials_for_unstable_page=4,
+                            click_waiting_timeout_in_seconds=10,
+                            print_error_log_to_console=True
+                    ):
+                        break
+                    sleep(url_info['PageUpdatesWaitingTimeLimitInSeconds'])  # wait for javascript to render html elements
     return None
 
 
@@ -163,19 +204,21 @@ URLData = {
     #     'LogoPath': './Logos/handler2.png',
     #     'HTMLContentHandler': handler2
     # },
-    '国务院发展研究中心（中心动态）': {
-        'URL': 'https://www.drc.gov.cn/Leaf.aspx?leafid=1346',
-        'RulesAwaitingSelectors(Types,Rules)': [
-            ('css', 'div.conright.fr'),
-            ('css', 'div.containerbg'),
-            ('css', 'div.document-box'),
-            ('css', 'div.rr3'),
-            ('css', 'div.re_box'),
-        ],
-        'WaitingTimeLimitInSeconds': 30,
-        'LogoPath': './Logos/handler3.png',
-        'HTMLContentHandler': handler3
-    },
+    # '国务院发展研究中心（中心动态）': {
+    #     'URL': 'https://www.drc.gov.cn/Leaf.aspx?leafid=1346',
+    #     'NumberOfPagesNeeded': 2,
+    #     'RulesAwaitingSelectors(Types,Rules)': [
+    #         ('css', 'div.conright.fr'),
+    #         ('css', 'div.containerbg'),
+    #         ('css', 'div.document-box'),
+    #         ('css', 'div.rr3'),
+    #         ('css', 'div.re_box'),
+    #     ],
+    #     'MainPageWaitingTimeLimitInSeconds': 30,
+    #     'PageUpdatesWaitingTimeLimitInSeconds': 1,
+    #     'LogoPath': './Logos/handler3.png',
+    #     'HTMLContentHandler': handler3
+    # },
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -219,17 +262,16 @@ for (url_name, url_info) in LoopMeter(
         'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
     )
     print(f"Start collecting data from {url_name}.")
-    chrome_page_render = ChromePageRender(
-        chrome_driver_filepath=__chrome_driver_path,
-        options=chrome_options
-    )
-    url_info['HTMLContentHandler'](
-        chrome_page_render=chrome_page_render,
-        document=new_document,
-        url_name=url_name,
-        url_info=url_info
-    )
-    chrome_page_render.close()
+    with ChromePageRender(
+            chrome_driver_filepath=__chrome_driver_path,
+            options=chrome_options
+    ) as chrome_page_render:
+        url_info['HTMLContentHandler'](
+            chrome_page_render=chrome_page_render,
+            document=new_document,
+            url_name=url_name,
+            url_info=url_info
+        )
 
 try:
     with open('./generated_html/index.html', 'w', encoding='utf-8') as html_file:
