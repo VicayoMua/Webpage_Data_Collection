@@ -93,40 +93,54 @@ def handler2(document: HTMLDocument, site_name: str, site_logo_path: str, site_u
 
 
 URLData = {
-    '中国国际工程咨询有限公司（智库建议）': {
+    # '中国国际工程咨询有限公司（智库建议）': {
+    #     'URLs': [
+    #         'https://www.ciecc.com.cn/col/col3963/index.html',
+    #         'https://www.ciecc.com.cn/col/col3963/index.html?uid=5248&pageNum=2',
+    #     ],
+    #     'SelectorType': 'css',
+    #     'RulesAwaitingSelectors': [
+    #         'div.main_comr.fr',
+    #         'div.default_pgContainer',
+    #         'div.news-list',
+    #         'div.newscontent'
+    #     ],
+    #     'LogoPath': './Logos/handler1.jpg',
+    #     'HTMLContentHandler': handler1
+    # },
+    # '中国国际工程咨询有限公司（中咨视界）': {
+    #     'URLs': [
+    #         'https://www.ciecc.com.cn/col/col2218/index.html',
+    #         'https://www.ciecc.com.cn/col/col2218/index.html?uid=5248&pageNum=2',
+    #     ],
+    #     'SelectorType': 'css',
+    #     'RulesAwaitingSelectors': [
+    #         'div.main_comr.fr',
+    #         'div.default_pgContainer',
+    #         'div.news-list',
+    #         'div.newscontent'
+    #     ],
+    #     'LogoPath': './Logos/handler1.jpg',
+    #     'HTMLContentHandler': handler1
+    # },
+    # '中国人民大学国家发展与战略研究院（学者观点）': {
+    #     'URLs': [
+    #         'http://nads.ruc.edu.cn/zkdt/xzgd/index.htm',
+    #         'http://nads.ruc.edu.cn/zkdt/xzgd/index1.htm',
+    #     ],
+    #     'SelectorType': 'css',
+    #     'RulesAwaitingSelectors': [
+    #         'div.commonRight',
+    #         'div.commonRightTitle',
+    #         'div.Brief',
+    #         'div.briefItem',
+    #     ],
+    #     'LogoPath': './Logos/handler2.png',
+    #     'HTMLContentHandler': handler2
+    # },
+    '中国人民大学国家发展与战略研究院（双周政策分析简报）': {
         'URLs': [
-            'https://www.ciecc.com.cn/col/col3963/index.html',
-            'https://www.ciecc.com.cn/col/col3963/index.html?uid=5248&pageNum=2',
-        ],
-        'SelectorType': 'css',
-        'RulesAwaitingSelectors': [
-            'div.main_comr.fr',
-            'div.default_pgContainer',
-            'div.news-list',
-            'div.newscontent'
-        ],
-        'LogoPath': './Logos/handler1.jpg',
-        'HTMLContentHandler': handler1
-    },
-    '中国国际工程咨询有限公司（中咨视界）': {
-        'URLs': [
-            'https://www.ciecc.com.cn/col/col2218/index.html',
-            'https://www.ciecc.com.cn/col/col2218/index.html?uid=5248&pageNum=2',
-        ],
-        'SelectorType': 'css',
-        'RulesAwaitingSelectors': [
-            'div.main_comr.fr',
-            'div.default_pgContainer',
-            'div.news-list',
-            'div.newscontent'
-        ],
-        'LogoPath': './Logos/handler1.jpg',
-        'HTMLContentHandler': handler1
-    },
-    '中国人民大学国家发展与战略研究院（学者观点）': {
-        'URLs': [
-            'http://nads.ruc.edu.cn/zkdt/xzgd/index.htm',
-            'http://nads.ruc.edu.cn/zkdt/xzgd/index1.htm',
+            'http://nads.ruc.edu.cn/zkcg/zcjb/szzcfxjb/index.htm',
         ],
         'SelectorType': 'css',
         'RulesAwaitingSelectors': [
