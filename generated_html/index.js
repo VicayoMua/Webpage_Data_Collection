@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const searchContainer = document.getElementById('search-container');
     if (!searchContainer) {
-        alert(`Cannot find "<div class="page-board" id="search-container"></div>".`);
+        alert(`Failed to find "<div class="page-board" id="search-container"></div>".`);
         return;
     }
     // Create <startLabel> and <startInput>
@@ -29,8 +29,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Filter items by selected date range
     function filterByDate() {
+        const startDate = startInput.value ? new Date(startInput.value) : null;
+        const endDate = endInput.value ? new Date(endInput.value) : null;
+        pageBoardItems.forEach((pageBoardItem) => {
+            const span = pageBoardItem.querySelector('span');
+            if (span === null || span.textContent.trim() === '') { // no date span → hide
+                pageBoardItem.style.display = 'none'; // hide
+                return;
+            }
+            const date = parseDateString(span.textContent.trim());
+            if (date === null) { // failed to parse date string → show
+                alert(`Failed to parse date string "${span.textContent.trim()}".`);
+                pageBoardItem.style.display = 'block'; // show
+                return;
+            }
+            if ((startDate !== null && date < startDate) || (endDate !== null && date > endDate)) {
+                pageBoardItem.style.display = 'none'; // hide
+                return;
+            }
+            pageBoardItem.style.display = 'block'; // show
 
+            function parseDateString(str) {
+                for (const reg of [
+                    /^(\d{4})年(\d{1,2})月(\d{1,2})日$/,  // Chinese format: "2025年6月23日"
+                    /^(\d{4})-(\d{1,2})-(\d{1,2})$/,     // English format 1: "2025-06-23"
+                    /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/,   // English format 2: "2025/06/23"
+                    /^(\d{4})\.(\d{1,2})\.(\d{1,2})$/,   // English format 3: "2025.06.23"
+                ]) {
+                    const m = str.match(reg);
+                    if (m !== null) {
+                        const [_, yr, mon, day] = m;
+                        return new Date(`${yr}-${mon}-${day}`);
+                    }
+                }
+                return null;
+            }
+        });
     }
+
 });
 
 // grab one or all
