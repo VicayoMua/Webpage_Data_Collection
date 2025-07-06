@@ -25,8 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
     clearButton.classList.add('search-container-clear-button');
     clearButton.type = 'button';
     clearButton.innerText = '重置筛选器';
-    // append <startLabel>, <startInput>, <endLabel>, <endInput>, and <clearButton> to <searchContainer>
-    searchContainer.append(startLabel, startInput, endLabel, endInput, clearButton);
+    // create <downloadPDFButton>
+    const downloadPDFButton = document.createElement('button');
+    downloadPDFButton.classList.add('search-container-download-PDF-button');
+    downloadPDFButton.type = 'button';
+    downloadPDFButton.innerText = '下载PDF';
+    // append <startLabel>, <startInput>, <endLabel>, <endInput>, <clearButton>, and <downloadPDFButton> to <searchContainer>
+    searchContainer.append(startLabel, startInput, endLabel, endInput, clearButton, downloadPDFButton);
     // find all the page boards and corresponding page board items
     const pageBoardsInfo = [
         /*
@@ -59,6 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
     clearButton.addEventListener('click', () => {
         startInput.value = endInput.value = '';
         filterByDate();
+    });
+    // listen to clicking on <downloadPDFButton>
+    downloadPDFButton.addEventListener(() => {
+        //...
     });
 
     // filter items by selected date range
@@ -120,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
+// helper function primarily for code testing
 function dateToString(date) {
     if (date === null) {
         return 'null';
