@@ -33,7 +33,7 @@ h1 {
 .page-board {
   max-width: 1000px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 15px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -71,7 +71,7 @@ h1 {
 
 /* Individual item styling */
 .page-board-item {
-  margin-bottom: 16px;
+  margin-bottom: 5px;
 }
 
 .page-board-item:last-child {
@@ -83,8 +83,8 @@ h1 {
   justify-content: space-between;
   align-items: center;
   text-decoration: none;
-  padding: 12px;
-  border-radius: 6px;
+  padding: 8px;
+  border-radius: 4px;
   transition: background-color 0.2s, box-shadow 0.2s;
 }
 
@@ -109,66 +109,29 @@ h1 {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2rem;
-  }
-  .page-board {
-    margin: 20px;
-    padding: 15px;
-  }
-  .page-board > a h2 {
-    font-size: 1.5rem;
-  }
-  .page-board-item a {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .page-board-item a span {
-    margin-left: 0;
-    margin-top: 6px;
-  }
+/* Search container (date filters) styling */
+#search-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-/* Modal overlay styles */
-#modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+#search-container label {
+  font-weight: 500;
+  font-size: 1rem;
 }
 
-/* Modal content */
-.modal-content {
-  position: relative;
-  width: 80%;
-  height: 80%;
-  max-width: 1200px;
-  margin: 5% auto;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
+#search-container input[type="date"] {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
-/* Close button */
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #333;
-  z-index: 1001;
-}
-
-/* Modal iframe */
-#modal-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+#search-container input[type="date"]:focus {
+  outline: none;
+  border-color: #888;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
