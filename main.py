@@ -316,149 +316,149 @@ URLData = {
         'LogoPath': './Logos/handler1.jpg',
         'HTMLContentHandler': handler1
     },
-    # '中国国际工程咨询有限公司（中咨视界）': {
-    #     'URLs': [
-    #         'https://www.ciecc.com.cn/col/col2218/index.html',
-    #         'https://www.ciecc.com.cn/col/col2218/index.html?uid=5248&pageNum=2',
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.main_comr.fr'),
-    #         ('css', 'div.default_pgContainer'),
-    #         ('css', 'div.news-list'),
-    #         ('css', 'div.newscontent')
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler1.jpg',
-    #     'HTMLContentHandler': handler1
-    # },
-    # '中国人民大学国家发展与战略研究院（学者观点）': {
-    #     'URLs': [
-    #         'http://nads.ruc.edu.cn/zkdt/xzgd/index.htm',
-    #         'http://nads.ruc.edu.cn/zkdt/xzgd/index1.htm',
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.commonRight'),
-    #         ('css', 'div.commonRightTitle'),
-    #         ('css', 'div.Brief'),
-    #         ('css', 'div.briefItem'),
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler2.png',
-    #     'HTMLContentHandler': handler2
-    # },
-    # '中国人民大学国家发展与战略研究院（双周政策分析简报）': {
-    #     'URLs': [
-    #         'http://nads.ruc.edu.cn/zkcg/zcjb/szzcfxjb/index.htm',
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.commonRight'),
-    #         ('css', 'div.commonRightTitle'),
-    #         ('css', 'div.Brief'),
-    #         ('css', 'div.briefItem'),
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler2.png',
-    #     'HTMLContentHandler': handler2
-    # },
-    # '国务院发展研究中心（中心动态）': {
-    #     'URL': 'https://www.drc.gov.cn/Leaf.aspx?leafid=1346',
-    #     'NumberOfPagesNeeded': 2,
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.conright.fr'),
-    #         ('css', 'div.containerbg'),
-    #         ('css', 'div.document-box'),
-    #         ('css', 'div.rr3'),
-    #         ('css', 'div.re_box'),
-    #     ],
-    #     'MainPageWaitingTimeLimitInSeconds': 30,
-    #     'PageUpdatesWaitingTimeLimitInSeconds': 1,
-    #     'LogoPath': './Logos/handler3.png',
-    #     'HTMLContentHandler': handler3
-    # },
-    # '中国科学院（院内要闻）': {
-    #     'URLs': [
-    #         'https://www.cas.cn/yw/index.shtml',
-    #         'https://www.cas.cn/yw/index_1.shtml'
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.container.boxcenter.main.pad_main'),
-    #         ('css', 'div.xl.list_xl'),
-    #         ('css', 'ul.gl_list2'),
-    #         ('css', 'div#content')
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler4.png',
-    #     'HTMLContentHandler': handler4
-    # },
-    # '中国宏观经济研究院（科研动态）': {
-    #     'URLs': [
-    #         'https://www.amr.org.cn/ghdt/kydt/index.html',
-    #         'https://www.amr.org.cn/ghdt/kydt/index_1.html'
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.flex'),
-    #         ('css', 'div.list'),
-    #         ('css', 'ul.u-list')
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler5.png',
-    #     'HTMLContentHandler': handler5
-    # },
-    # 'CCiD赛迪研究院（赛迪新闻）': {
-    #     'URLs': [
-    #         'https://www.ccidgroup.com/xwdt/sdxw.htm',
-    #         'https://www.ccidgroup.com/xwdt/sdxw/91.htm'
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.layout_div1_list'),
-    #         ('css', 'div.new_list.new0')
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler6.png',
-    #     'HTMLContentHandler': handler6
-    # },
-    # '上海社会科学院（新闻）': {
-    #     'URLs': [
-    #         'https://www.sass.org.cn/1198/list1.htm',
-    #         'https://www.sass.org.cn/1198/list2.htm'
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.column-news-con'),
-    #         ('css', 'div.column-news-list.clearfix'),
-    #         ('css', 'ul.cols_list.clearfix')
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler7.png',
-    #     'HTMLContentHandler': handler7
-    # },
-    # '上海社会科学院（专家视点）': {
-    #     'URLs': [
-    #         'https://www.sass.org.cn/1201/list.htm',
-    #         'https://www.sass.org.cn/1201/list2.htm'
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.column-news-con'),
-    #         ('css', 'div.column-news-list.clearfix'),
-    #         ('css', 'ul.cols_list.clearfix')
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler7.png',
-    #     'HTMLContentHandler': handler7
-    # },
-    # '上海社会科学院（习近平文化思想最佳实践地建设）': {
-    #     'URLs': [
-    #         'https://www.sass.org.cn/5867/list.htm',
-    #         'https://www.sass.org.cn/5867/list2.htm'
-    #     ],
-    #     'RulesAwaitingSelectors(Types,Rules)': [
-    #         ('css', 'div.column-news-con'),
-    #         ('css', 'div.column-news-list.clearfix'),
-    #         ('css', 'ul.cols_list.clearfix')
-    #     ],
-    #     'WaitingTimeLimitInSeconds': 30,
-    #     'LogoPath': './Logos/handler7.png',
-    #     'HTMLContentHandler': handler7
-    # },
+    '中国国际工程咨询有限公司（中咨视界）': {
+        'URLs': [
+            'https://www.ciecc.com.cn/col/col2218/index.html',
+            'https://www.ciecc.com.cn/col/col2218/index.html?uid=5248&pageNum=2',
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.main_comr.fr'),
+            ('css', 'div.default_pgContainer'),
+            ('css', 'div.news-list'),
+            ('css', 'div.newscontent')
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler1.jpg',
+        'HTMLContentHandler': handler1
+    },
+    '中国人民大学国家发展与战略研究院（学者观点）': {
+        'URLs': [
+            'http://nads.ruc.edu.cn/zkdt/xzgd/index.htm',
+            'http://nads.ruc.edu.cn/zkdt/xzgd/index1.htm',
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.commonRight'),
+            ('css', 'div.commonRightTitle'),
+            ('css', 'div.Brief'),
+            ('css', 'div.briefItem'),
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler2.png',
+        'HTMLContentHandler': handler2
+    },
+    '中国人民大学国家发展与战略研究院（双周政策分析简报）': {
+        'URLs': [
+            'http://nads.ruc.edu.cn/zkcg/zcjb/szzcfxjb/index.htm',
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.commonRight'),
+            ('css', 'div.commonRightTitle'),
+            ('css', 'div.Brief'),
+            ('css', 'div.briefItem'),
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler2.png',
+        'HTMLContentHandler': handler2
+    },
+    '国务院发展研究中心（中心动态）': {
+        'URL': 'https://www.drc.gov.cn/Leaf.aspx?leafid=1346',
+        'NumberOfPagesNeeded': 2,
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.conright.fr'),
+            ('css', 'div.containerbg'),
+            ('css', 'div.document-box'),
+            ('css', 'div.rr3'),
+            ('css', 'div.re_box'),
+        ],
+        'MainPageWaitingTimeLimitInSeconds': 30,
+        'PageUpdatesWaitingTimeLimitInSeconds': 1,
+        'LogoPath': './Logos/handler3.png',
+        'HTMLContentHandler': handler3
+    },
+    '中国科学院（院内要闻）': {
+        'URLs': [
+            'https://www.cas.cn/yw/index.shtml',
+            'https://www.cas.cn/yw/index_1.shtml'
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.container.boxcenter.main.pad_main'),
+            ('css', 'div.xl.list_xl'),
+            ('css', 'ul.gl_list2'),
+            ('css', 'div#content')
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler4.png',
+        'HTMLContentHandler': handler4
+    },
+    '中国宏观经济研究院（科研动态）': {
+        'URLs': [
+            'https://www.amr.org.cn/ghdt/kydt/index.html',
+            'https://www.amr.org.cn/ghdt/kydt/index_1.html'
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.flex'),
+            ('css', 'div.list'),
+            ('css', 'ul.u-list')
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler5.png',
+        'HTMLContentHandler': handler5
+    },
+    'CCiD赛迪研究院（赛迪新闻）': {
+        'URLs': [
+            'https://www.ccidgroup.com/xwdt/sdxw.htm',
+            'https://www.ccidgroup.com/xwdt/sdxw/91.htm'
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.layout_div1_list'),
+            ('css', 'div.new_list.new0')
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler6.png',
+        'HTMLContentHandler': handler6
+    },
+    '上海社会科学院（新闻）': {
+        'URLs': [
+            'https://www.sass.org.cn/1198/list1.htm',
+            'https://www.sass.org.cn/1198/list2.htm'
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.column-news-con'),
+            ('css', 'div.column-news-list.clearfix'),
+            ('css', 'ul.cols_list.clearfix')
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler7.png',
+        'HTMLContentHandler': handler7
+    },
+    '上海社会科学院（专家视点）': {
+        'URLs': [
+            'https://www.sass.org.cn/1201/list.htm',
+            'https://www.sass.org.cn/1201/list2.htm'
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.column-news-con'),
+            ('css', 'div.column-news-list.clearfix'),
+            ('css', 'ul.cols_list.clearfix')
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler7.png',
+        'HTMLContentHandler': handler7
+    },
+    '上海社会科学院（习近平文化思想最佳实践地建设）': {
+        'URLs': [
+            'https://www.sass.org.cn/5867/list.htm',
+            'https://www.sass.org.cn/5867/list2.htm'
+        ],
+        'RulesAwaitingSelectors(Types,Rules)': [
+            ('css', 'div.column-news-con'),
+            ('css', 'div.column-news-list.clearfix'),
+            ('css', 'ul.cols_list.clearfix')
+        ],
+        'WaitingTimeLimitInSeconds': 30,
+        'LogoPath': './Logos/handler7.png',
+        'HTMLContentHandler': handler7
+    },
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -495,18 +495,14 @@ with new_document.head:
         name='viewport',
         content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
     )
-    HTMLTags.link(
-        rel='stylesheet',
-        href='./index.css'
-    )
-    HTMLTags.script(
-        src='./index.js'
-    )
+    HTMLTags.link(rel='stylesheet', href='./index.css')
+    HTMLTags.script(src='./index.js')
 with new_document.body:
     HTMLTags.h1(
         f"知名智库精选数据（更新时间：{current_time.year}/{current_time.month:02d}/{current_time.day:02d} "
         f"{current_time.hour:02d}:{current_time.minute:02d}:{current_time.second:02d}）"
     )
+    HTMLTags.div(cls='page-board', id='search-container')
 
 for (url_name, url_info) in LoopMeter(URLData.items(), unit="site", unit_scale=False):
     url_info['HTMLContentHandler'](
