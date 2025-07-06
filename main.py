@@ -502,7 +502,7 @@ with new_document.body:
         f"知名智库精选数据（更新时间：{current_time.year}/{current_time.month:02d}/{current_time.day:02d} "
         f"{current_time.hour:02d}:{current_time.minute:02d}:{current_time.second:02d}）"
     )
-    HTMLTags.div(cls='page-board', id='search-container')
+    HTMLTags.div(cls='page-board search-container', id='search-container')
 
 for (url_name, url_info) in LoopMeter(URLData.items(), unit="site", unit_scale=False):
     url_info['HTMLContentHandler'](

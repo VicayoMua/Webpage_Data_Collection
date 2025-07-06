@@ -4,30 +4,41 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`Failed to find "<div class="page-board" id="search-container"></div>".`);
         return;
     }
-    // Create <startLabel> and <startInput>
+    // create <startLabel> and <startInput>
     const startLabel = document.createElement('label');
+    startLabel.classList.add('search-container-start-date-input-label');
     startLabel.htmlFor = 'search-container-start-date-input';
-    startLabel.id = 'search-container-start-date-input-label';
     startLabel.textContent = '开始日期：';
     const startInput = document.createElement('input');
+    startInput.classList.add('search-container-start-date-input');
     startInput.type = 'date';
-    startInput.id = 'search-container-start-date-input';
-    // Create <endLabel> and <endInput>
+    // create <endLabel> and <endInput>
     const endLabel = document.createElement('label');
+    endLabel.classList.add('search-container-end-date-input-label');
     endLabel.htmlFor = 'search-container-end-date-input';
-    endLabel.id = 'search-container-end-date-input-label';
     endLabel.textContent = '结束日期：';
     const endInput = document.createElement('input');
+    endInput.classList.add('search-container-end-date-input');
     endInput.type = 'date';
-    endInput.id = 'search-container-end-date-input';
-    // append <startLabel>, <startInput>, <endLabel>, and <endInput> to <searchContainer>
-    searchContainer.append(startLabel, startInput, endLabel, endInput);
+    // create <clearButton>
+    const clearButton = document.createElement('button');
+    clearButton.classList.add('search-container-clear-button');
+    clearButton.type = 'button';
+    clearButton.innerText = '重置筛选器';
+    // append <startLabel>, <startInput>, <endLabel>, <endInput>, and <clearButton> to <searchContainer>
+    searchContainer.append(startLabel, startInput, endLabel, endInput, clearButton);
     // listen to any changes on <startInput> and <endInput>
     const pageBoardItems = document.querySelectorAll('div.page-board-item');
     startInput.addEventListener('change', filterByDate);
     endInput.addEventListener('change', filterByDate);
+    // listen to clicking on <clearButton>
+    clearButton.addEventListener('click', () => {
+        startInput.value = '';
+        endInput.value = '';
+        filterByDate()
+    });
 
-    // Filter items by selected date range
+    // filter items by selected date range
     function filterByDate() {
         const startDate = startInput.value ? new Date(startInput.value) : null;
         const endDate = endInput.value ? new Date(endInput.value) : null;
@@ -66,14 +77,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
 });
-
-// grab one or all
-// const items = document.querySelectorAll('.page-board-item');
-//
-// // hide every item
-// items.forEach(el => el.style.display = 'none');
-//
-// // show them again
-// items.forEach(el => el.style.display = 'block');
