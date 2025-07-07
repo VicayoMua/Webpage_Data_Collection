@@ -66,8 +66,43 @@ document.addEventListener('DOMContentLoaded', () => {
         filterByDate();
     });
     // listen to clicking on <downloadPDFButton>
-    downloadPDFButton.addEventListener(() => {
-        //...
+    downloadPDFButton.addEventListener('click', function downloadPDFButtonEventListener() {
+        downloadPDFButton.removeEventListener('click', downloadPDFButtonEventListener);
+        downloadPDFButton.innerText = '正在加载PDF文件...';
+        try {
+            // Set the desired fixed PDF width
+            const pdfWidth = 1100 + Math.abs(1100 - document.body.scrollWidth) / 3; // Fixed width in px
+            const pdfHeight = document.body.scrollHeight + 100;
+            html2pdf().set({
+                margin: 0,
+                image: {type: 'jpeg', quality: 1.0},
+                html2canvas: {scale: 2},
+                jsPDF: {unit: 'px', format: [pdfWidth, pdfHeight], orientation: 'portrait'},
+                pagebreak: {mode: ['avoid-all', 'css', 'legacy']}
+            })
+                .from(document.body)
+                .toPdf()
+                .get('pdf')
+                .then((pdfObj) => {
+                    // Create a temporary URL for the Blob
+                    const url = URL.createObjectURL(
+                        new Blob([pdfObj.output('arraybuffer')], {type: 'application/pdf'})
+                    );
+                    // Create a temporary <a> element to trigger download
+                    const alink = document.createElement('a');
+                    alink.href = url;
+                    alink.download = 'page.pdf'; // The downloaded filename
+                    alink.click();
+                    URL.revokeObjectURL(url);
+                })
+                .then(() => {
+                    downloadPDFButton.addEventListener('click', downloadPDFButtonEventListener);
+                    downloadPDFButton.innerText = '下载PDF';
+                });
+        } catch (e) {
+            downloadPDFButton.innerText = '生成PDF失败';
+            throw e;
+        }
     });
 
     // filter items by selected date range
@@ -88,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const date = parseDateString(span.textContent.trim());
                 if (date === null) { // failed to parse date string → show
-                    alert(`Failed to parse date string "${span.textContent.trim()}".`);
+                    alert(`无法转换日期格式 "${span.textContent.trim()}".`);
                     pageBoardItem.style.display = 'block'; // show
                     return;
                 }
@@ -127,16 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return null;
         }
     }
-});
 
-// helper function primarily for code testing
-function dateToString(date) {
-    if (date === null) {
-        return 'null';
+    // helper function primarily for code testing
+    function dateToString(date) {
+        if (date === null) {
+            return 'null';
+        }
+        const
+            year = date.getFullYear(),
+            month = String(date.getMonth() + 1).padStart(2, '0'), // Months are zero-indexed
+            day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
-    const
-        year = date.getFullYear(),
-        month = String(date.getMonth() + 1).padStart(2, '0'), // Months are zero-indexed
-        day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
+});

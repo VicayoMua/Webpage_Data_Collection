@@ -496,6 +496,7 @@ with new_document.head:
         content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
     )
     HTMLTags.link(rel='stylesheet', href='./index.css')
+    HTMLTags.script(src='./html2pdf.bundle.min.js')
     HTMLTags.script(src='./index.js')
 with new_document.body:
     HTMLTags.h1(
