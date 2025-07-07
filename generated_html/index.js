@@ -73,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Set the desired fixed PDF width
             const pdfWidth = 1100 + Math.abs(1100 - document.body.scrollWidth) / 3; // Fixed width in px
             const pdfHeight = document.body.scrollHeight + 100;
-            html2pdf().set({
-                margin: 0,
-                image: {type: 'jpeg', quality: 1.0},
-                html2canvas: {scale: 2},
-                jsPDF: {unit: 'px', format: [pdfWidth, pdfHeight], orientation: 'portrait'},
-                pagebreak: {mode: ['avoid-all', 'css', 'legacy']}
-            })
+            html2pdf()
+                .set({
+                    margin: 0,
+                    image: {type: 'jpeg', quality: 0.75},
+                    html2canvas: {scale: 3},
+                    jsPDF: {unit: 'px', format: [pdfWidth, pdfHeight], orientation: 'portrait'},
+                })
                 .from(document.body)
                 .toPdf()
                 .get('pdf')
@@ -92,8 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const alink = document.createElement('a');
                     alink.href = url;
                     alink.download = 'page.pdf'; // The downloaded filename
+                    // document.appendChild(alink);
                     alink.click();
                     URL.revokeObjectURL(url);
+                    // document.removeChild(alink);
                 })
                 .then(() => {
                     downloadPDFButton.addEventListener('click', downloadPDFButtonEventListener);
