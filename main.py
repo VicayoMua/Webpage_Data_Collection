@@ -505,13 +505,19 @@ with new_document.body:
     )
     HTMLTags.div(cls='page-board search-container', id='search-container')
 
+name_errors = []
 for (url_name, url_info) in LoopMeter(URLData.items(), unit="site", unit_scale=False):
-    url_info['HTMLContentHandler'](
-        chrome_page_render=chrome_page_render,
-        document=new_document,
-        url_name=url_name,
-        url_info=url_info
-    )
+    try:
+        url_info['HTMLContentHandler'](
+            chrome_page_render=chrome_page_render,
+            document=new_document,
+            url_name=url_name,
+            url_info=url_info
+        )
+    except Exception as e:
+        name_errors.append((url_name, e))
+for (url_name, error) in name_errors:
+    print(f'{url_name} --> {error}')
 
 try:
     with open('./generated_html/index.html', 'w', encoding='utf-8') as html_file:
